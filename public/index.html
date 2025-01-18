@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Decentralized Poll App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Decentralized Polling Platform</h1>
+
+        <!-- Poll Cards Section -->
+        <div id="polls-container">
+            <div class="poll-card">
+                <h2>Do you support decentralization?</h2>
+                <p>Vote on this important question about the future of the web.</p>
+                <button id="vote-yes" onclick="vote('yes')">Vote Yes</button>
+                <button id="vote-no" onclick="vote('no')">Vote No</button>
+            </div>
+
+            <div class="poll-card">
+                <h2>Should we use blockchain for voting?</h2>
+                <p>Is blockchain technology the future of secure and transparent voting systems?</p>
+                <button id="vote-yes" onclick="vote('yes')">Vote Yes</button>
+                <button id="vote-no" onclick="vote('no')">Vote No</button>
+            </div>
+
+            <!-- Additional Poll Cards can be added dynamically -->
+        </div>
+        
+        <!-- Footer Section -->
+        <footer>
+            <p>Made with ❤️ by <a href="https://github.com/your-username" target="_blank">Your Name</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

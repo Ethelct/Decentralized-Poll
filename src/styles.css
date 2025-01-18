@@ -1,0 +1,149 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Body */
+body {
+    background-color: #1E1E2F;
+    color: #f3f3f3;
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Container for the poll app */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Title */
+h1 {
+    font-size: 2.5em;
+    color: #FFD700;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+/* Poll Card */
+.poll-card {
+    background-color: #2D2D44;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.poll-card:hover {
+    transform: scale(1.05);
+}
+
+.poll-card h2 {
+    font-size: 1.8em;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.poll-card p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.poll-card button {
+    background-color: #FFD700;
+    color: #1E1E2F;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.poll-card button:hover {
+    background-color: #FFC107;
+}
+
+.poll-card button:focus {
+    outline: none;
+}
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+footer a {
+    color: #FFD700;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .poll-card {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+
+    .poll-card h2 {
+        font-size: 1.5em;
+    }
+
+    .poll-card p {
+        font-size: 1em;
+    }
+
+    .poll-card button {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .poll-card {
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .poll-card h2 {
+        font-size: 1.3em;
+    }
+
+    .poll-card p {
+        font-size: 0.9em;
+    }
+
+    .poll-card button {
+        font-size: 0.9em;
+    }
+}
