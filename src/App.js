@@ -1,62 +1,79 @@
-// Ensure Web3.js is available
-if (typeof Web3 !== 'undefined') {
-    var web3 = new Web3(Web3.givenProvider || "http://localhost:8545");  // Web3 provider
-} else {
-    alert("Please install MetaMask to interact with the app.");
-}
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import PollCard from './components/PollCard';
+import './App.css';
 
-// Smart contract details (replace with your contract's details)
-const contractAddress = 'YOUR_CONTRACT_ADDRESS';
-const contractABI = [ /* Your ABI here */ ];
+// You can load the contract ABI here
+import PollContractABI from './contracts/PollContract.json';
 
-let contract;
+function App() {
+  const [polls, setPolls] = useState([]);
+  const [account, setAccount] = useState('');
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState('');
+  const [provider, setProvider] = useState(null);
+  const [contract, setContract] = useState(null);
 
-// Set up contract interaction
-async function initContract() {
-    // Initialize contract using web3
-    contract = new web3.eth.Contract(contractABI, contractAddress);
-
-    // Check if user is connected
-    const accounts = await web3.eth.getAccounts();
-    if (accounts.length === 0) {
-        alert("Please connect your wallet.");
-    }
-}
-
-// Handle vote submission
-async function vote(choice) {
-    const accounts = await web3.eth.getAccounts();
-    if (accounts.length === 0) {
-        alert("Please connect your wallet.");
+  useEffect(() => {
+    async function init() {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert('Please install MetaMask');
         return;
-    }
+      }
 
-    try {
-        // Send transaction to smart contract to record vote
-        await contract.methods.vote(choice).send({ from: accounts[0] });
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      setProvider(provider);
 
-        // Feedback to user
-        alert(`Your vote for "${choice}" has been submitted!`);
-    } catch (error) {
-        console.error("Error submitting vote:", error);
-        alert("There was an error while submitting your vote.");
+      const network = await provider.getNetwork();
+      const contractAddress = 'YOUR_CONTRACT_ADDRESS_HERE'; // replace with your contract address
+      const contract = new ethers.Contract(contractAddress, PollContractABI, provider);
+      setContract(contract);
+
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      setAccount(accounts[0]);
+
+      const pollCount = await contract.getPollsCount();
+      const pollsData = [];
+      for (let i = 0; i < pollCount; i++) {
+        const poll = await contract.getPollDetails(i);
+        pollsData.push(poll);
+      }
+      setPolls(pollsData);
     }
+    init();
+  }, []);
+
+  const handleCreatePoll = async () => {
+    const optionsArray = pollOptions.split(',');
+    await contract.createPoll(pollQuestion, optionsArray);
+  };
+
+  return (
+    <div className="App">
+      <h1>Decentralized Polls</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Poll Question"
+          value={pollQuestion}
+          onChange={(e) => setPollQuestion(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Poll Options (comma separated)"
+          value={pollOptions}
+          onChange={(e) => setPollOptions(e.target.value)}
+        />
+        <button onClick={handleCreatePoll}>Create Poll</button>
+      </div>
+      <div>
+        {polls.map((poll, index) => (
+          <PollCard key={index} poll={poll} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
-// Initialize contract when page loads
-window.onload = async () => {
-    await initContract();
-};
-
-// Function to display results dynamically (example implementation)
-async function displayPollResults() {
-    const yesVotes = await contract.methods.getVotes('yes').call();
-    const noVotes = await contract.methods.getVotes('no').call();
-
-    // Update the results dynamically
-    document.getElementById('yes-votes').innerText = `Yes: ${yesVotes}`;
-    document.getElementById('no-votes').innerText = `No: ${noVotes}`;
-}
-
-// Set interval to refresh results every 5 seconds
-setInterval(displayPollResults, 5000);
+export default App;
